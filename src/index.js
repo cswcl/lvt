@@ -8,8 +8,13 @@ const InteractiveTile = require('./interactive-tile');
 
 
 // allow gridLayer to be interactive
-let lastSheet = document.styleSheets[document.styleSheets.length - 1];
-lastSheet.insertRule('.interactive .leaflet-tile-container {pointer-events: auto}');
+(function makeGridLayerInteractive() {
+  let styleSheets = document.styleSheets;
+  let lastSheet = styleSheets[styleSheets.length - 1];
+  let rule = '.interactive .leaflet-tile-container {pointer-events: auto}';
+  lastSheet.insertRule(rule, lastSheet.cssRules.length);
+})();
+
 
 const VectorGrid = L.GridLayer.extend({
   createTile: function(coords, done) {
