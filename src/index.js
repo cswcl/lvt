@@ -1,5 +1,5 @@
 'use strict';
-/* globals document, fetch, FileReader */
+/* globals fetch, FileReader */
 
 const Pbf = require('pbf');
 const vectorTile = require('vector-tile');
@@ -7,16 +7,18 @@ const L = require('leaflet');
 const InteractiveTile = require('./interactive-tile');
 
 
-// allow gridLayer to be interactive
-(function makeGridLayerInteractive() {
-  let styleSheets = document.styleSheets;
-  let lastSheet = styleSheets[styleSheets.length - 1];
-  let rule = '.interactive .leaflet-tile-container {pointer-events: auto}';
-  lastSheet.insertRule(rule, lastSheet.cssRules.length);
-})();
+const VectorTileLayer = L.GridLayer.extend({
+  options: {
+    subdomains: 'abc',  // Like L.TileLayer
+  },
 
 
-const VectorGrid = L.GridLayer.extend({
+  initialize: function(url, options) {
+    this._url = url;
+
+    L.GridLayer.prototype.initialize.call(this, options);
+  },
+
   createTile: function(coords, done) {
     let tile = new InteractiveTile(coords, this.getTileSize().x, this.options); // this assumes square tiles
     let vectorTilePromise = this._getVectorTilePromise(coords);
@@ -31,31 +33,26 @@ const VectorGrid = L.GridLayer.extend({
       L.Util.requestAnimFrame(done);
     });
 
-    return tile.getContainer();
-  }
-});
+    let canvas = tile.getContainer();
+    canvas._interactiveTile = tile;
 
-const VectorTileLayer = VectorGrid.extend({
-  options: {
-    subdomains: 'abc',  // Like L.TileLayer
+    return canvas;
   },
 
+  query: function (latLng) {
+    let point = this._map.project(latLng);
+    let tileSize = this.getTileSize().x;  // this assumes square tiles
+    let tileXY = point.divideBy(tileSize).floor();
+    let xy = point.subtract(tileXY.multiplyBy(tileSize));
+    let zoom = this._map.getZoom();
+    let tileKey = this._tileCoordsToKey({x: tileXY.x, y: tileXY.y, z: zoom});
+    let tile = this._tiles[tileKey];
 
-  initialize: function(url, options) {
-    this._url = url;
-
-    if (options.className) {
-      let hasInteractiveClass = (options.className.split(/\s+/).indexOf('interactive') >= 0);
-      if (!hasInteractiveClass) {
-        options.className += ' interactive'; 
-      }
-    } else {
-      options.className = 'interactive';
+    if (tile) {
+      let interactiveTile = tile.el._interactiveTile;
+      return interactiveTile.query({x: xy.x, y: xy.y});
     }
-
-    VectorGrid.prototype.initialize.call(this, options);
   },
-
 
   _getSubdomain: L.TileLayer.prototype._getSubdomain,
 

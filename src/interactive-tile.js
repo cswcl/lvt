@@ -7,10 +7,6 @@ const util = require('./util');
 
 function InteractiveTile() {
   Tile.apply(this, arguments);
-
-  if (!this._options.onClick) {
-    this._options.onClick = function() {};
-  }
 }
 
 InteractiveTile.prototype = Object.create(Tile.prototype);
@@ -19,45 +15,7 @@ InteractiveTile.prototype.getContainer = function getContainer() {
   return this._canvas;
 };
 
-
-InteractiveTile.prototype._createCanvas =  function(size) {
-  let canvas = document.createElement('canvas');
-
-  canvas.width = size;
-  canvas.height = size;
-
-  L.DomEvent
-    .on(canvas, 'click', this._onClick, this);
-
-  return canvas;
-};
-
-InteractiveTile.prototype._beforeFeatureDraw = function _beforeFeatureDraw(feature, style) {
-  feature.clickTolerance = this._calculeClickTolerance(feature, style);
-};
-
-InteractiveTile.prototype._calculeClickTolerance = function _calculeClickTolerance(feature, style) {
-  let touchTolerance = (L.Browser.touch ? 10 : 2);
-
-  if (feature.type === Tile.POINT) {
-    // TODO: obtener valor real del radio a partir de style
-    // TODO: considerar que los marcadores despues incluiraran otras formas ademas de circulo
-    let markerRadius = 5;
-    return markerRadius + touchTolerance;
-  }
-
-  if (style.lineWidth > 0) {
-    return style.lineWidth / 2 + touchTolerance;
-  }
-};
-
-
-InteractiveTile.prototype._onClick = function _onClick(e) {
-  let p = {
-    x: e.offsetX,
-    y: e.offsetY
-  };
-
+InteractiveTile.prototype.query = function query(p) {
   for (let layerId in this._layers) {
     let layer = this._layers[layerId];
     let features = layer.features;
@@ -79,9 +37,38 @@ InteractiveTile.prototype._onClick = function _onClick(e) {
       }
 
       if (containsPoint) {
-        return this._options.onClick(feature, layer, e);
+        // TODO: devolver todos los features cercanos
+        return feature;
       }
     }
+  }
+};
+
+InteractiveTile.prototype._createCanvas =  function(size) {
+  let canvas = document.createElement('canvas');
+
+  canvas.width = size;
+  canvas.height = size;
+  
+  return canvas;
+};
+
+InteractiveTile.prototype._beforeFeatureDraw = function _beforeFeatureDraw(feature, style) {
+  feature.clickTolerance = this._calculeClickTolerance(feature, style);
+};
+
+InteractiveTile.prototype._calculeClickTolerance = function _calculeClickTolerance(feature, style) {
+  let touchTolerance = (L.Browser.touch ? 10 : 2);
+
+  if (feature.type === Tile.POINT) {
+    // TODO: obtener valor real del radio a partir de style
+    // TODO: considerar que los marcadores despues incluiraran otras formas ademas de circulo
+    let markerRadius = 5;
+    return markerRadius + touchTolerance;
+  }
+
+  if (style.lineWidth > 0) {
+    return style.lineWidth / 2 + touchTolerance;
   }
 };
 

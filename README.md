@@ -31,14 +31,6 @@ let vectorTileOptions = {
       style.strokeStyle = '#AA5500';
     }
     return style;
-  },
-  onClick: function (feature, layer, e) {
-    // Nota: feature.geometry es la geometria proyectada al
-    // tile donde se hizo click y por tanto
-    // no corresponde a las coordenadas reales.
-    console.log(feature);
-    console.log(layer);
-    console.log(e);
   }
 };
 
@@ -46,8 +38,13 @@ let url = 'http://tiles.map-server.cswlabs.cl/tiles/red_vial_1/{z}/{x}/{y}.pbf';
 let vtLayer = new VectorTileLayer(url, vectorTileOptions);
 vtLayer.addTo(map);
 
-
 map.setView(L.latLng(-33.4, -70.6), 10);
+
+map.on('click', function(e) {
+  let feature = vtLayer.query(e.latlng);
+  console.log(feature);
+});
+
 ```
 
 
