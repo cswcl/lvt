@@ -5,7 +5,7 @@ Este modulo permite crear un layer de leaflet que renderiza [vector tiles](https
 ## Instalación
 
 ```
-npm install
+npm install --save git+ssh://git@bitbucket.org/csw-consultores-ambientales/leaflet-vector-tile.git
 ```
 
 ## Uso
