@@ -1,6 +1,6 @@
 {
   "name": "leaflet-vector-tile",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "Renderiza mapbox vector tiles con soporte para interactividad",
   "main": "src/index.js",
   "scripts": {
