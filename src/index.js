@@ -6,10 +6,12 @@ const vectorTile = require('vector-tile');
 const L = require('leaflet');
 const InteractiveTile = require('./interactive-tile');
 
+const defaultStyle = {};
 
 const VectorTileLayer = L.GridLayer.extend({
   options: {
     subdomains: 'abc',  // Like L.TileLayer
+    style: () => defaultStyle
   },
 
 
@@ -20,8 +22,9 @@ const VectorTileLayer = L.GridLayer.extend({
   },
 
   createTile: function(coords, done) {
-    let tile = new InteractiveTile(coords, this.getTileSize().x, this.options); // this assumes square tiles
+    let tile = new InteractiveTile(coords, this.getTileSize().x); // this assumes square tiles
     let vectorTilePromise = this._getVectorTilePromise(coords);
+    let style = this.options.style;
 
     vectorTilePromise.then(function renderTile(vectorTile) {
       for (let layerId in vectorTile.layers) {
@@ -29,7 +32,7 @@ const VectorTileLayer = L.GridLayer.extend({
         tile.addVTLayer(layer);
       }
 
-      tile.draw();
+      tile.draw(style);
       L.Util.requestAnimFrame(done);
     });
 
@@ -54,8 +57,21 @@ const VectorTileLayer = L.GridLayer.extend({
     }
   },
 
-  _getSubdomain: L.TileLayer.prototype._getSubdomain,
+  setStyle: function(style) {
+    this.options.style = style;
+  },
 
+  // esta función se nombró reRender en vez de redraw porque redraw ya esta definida en leaflet
+  // y permite redibujar un tile pero descargando de nuevo la información.
+  reRender: function() {
+    for (let key in this._tiles) {
+      let tile = this._tiles[key];
+      let interactiveTile = tile.el._interactiveTile;
+      interactiveTile.draw(this.options.style);
+    }
+  },
+
+  _getSubdomain: L.TileLayer.prototype._getSubdomain,
 
   _getVectorTilePromise: function(coords) {
     let tileUrl = L.Util.template(this._url, L.extend({

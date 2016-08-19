@@ -1,7 +1,6 @@
 'use strict';
 
-function Tile(coords, tileSize, options) {
-  this._options = options;
+function Tile(coords, tileSize) {
   this._coords = coords;
   this._size = tileSize;
   this._canvas = this._createCanvas(this._size);
@@ -19,7 +18,7 @@ Tile.prototype.addVTLayer = function addVTLayer(layer) {
   this._layers[layer.name] = layer;
 };
 
-Tile.prototype.draw = function draw() {
+Tile.prototype.draw = function draw(getStyle) {
   for (let layerId in this._layers) {
     let layer = this._layers[layerId];
     let features = layer.features;
@@ -35,7 +34,7 @@ Tile.prototype.draw = function draw() {
         this._mkFeatureParts(feature, layer.pxPerExtent);
       }
 
-      let style = this._options.getStyle(feature, this._coords.z);
+      let style = getStyle(feature, this._coords.z);
 
       if (this._beforeFeatureDraw) {
         this._beforeFeatureDraw(feature, style);
