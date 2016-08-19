@@ -49,7 +49,7 @@ InteractiveTile.prototype._createCanvas =  function(size) {
 
   canvas.width = size;
   canvas.height = size;
-  
+
   return canvas;
 };
 

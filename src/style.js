@@ -10,10 +10,10 @@ const parseColorString = require('csscolorparser').parseCSSColor;
   }
 
   key: strokeStyle || fillStyle || lineWidth
-  
+
   // el tipo de <value> depende de <key>.
   // Pero todos los <key> aceptan adicionalmente el tipo <function>
-  value: <number> || <color> || <mapbox-gl-function> 
+  value: <number> || <color> || <mapbox-gl-function>
 
   mapbox-gl-function: ver https://www.mapbox.com/mapbox-gl-style-spec/#types-function
 
@@ -37,7 +37,7 @@ function parseStyle(style) {
   style = Object.assign({}, defaultStyle, style);
 
   let functionProperties = Object.keys(style)
-    .filter((key) => typeof style[key] === 'object');  
+    .filter((key) => typeof style[key] === 'object');
 
 
   if (!functionProperties.length) {
