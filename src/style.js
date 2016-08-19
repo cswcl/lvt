@@ -78,8 +78,9 @@ function parseStyle(style) {
   });
 
 
-  return function(zoom, properties) {
+  return function(feature, zoom) {
     let res = Object.assign({}, style);
+    let properties = feature.properties;
 
     functionProperties.forEach(function(key) {
       let value = style[key](zoom, properties);

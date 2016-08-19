@@ -5,6 +5,7 @@ const Pbf = require('pbf');
 const vectorTile = require('vector-tile');
 const L = require('leaflet');
 const InteractiveTile = require('./interactive-tile');
+const parseStyle = require('./style').parseStyle;
 
 const defaultStyle = {};
 
@@ -16,9 +17,9 @@ const VectorTileLayer = L.GridLayer.extend({
 
 
   initialize: function(url, options) {
-    this._url = url;
-
     L.GridLayer.prototype.initialize.call(this, options);
+    this._url = url;
+    this.setStyle(options.style);
   },
 
   createTile: function(coords, done) {
@@ -58,7 +59,7 @@ const VectorTileLayer = L.GridLayer.extend({
   },
 
   setStyle: function(style) {
-    this.options.style = style;
+    this.options.style = typeof style === 'function' ? style : parseStyle(style);
   },
 
   // esta función se nombró reRender en vez de redraw porque redraw ya esta definida en leaflet
