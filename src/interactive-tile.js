@@ -5,8 +5,13 @@ const L = require('leaflet');
 const Tile = require('./tile');
 const util = require('./util');
 
-function InteractiveTile() {
-  Tile.apply(this, arguments);
+function InteractiveTile(coords, tileSize) {
+  let canvas = document.createElement('canvas');
+
+  canvas.width = tileSize;
+  canvas.height = tileSize;
+
+  Tile.call(this, coords, tileSize, canvas);
 }
 
 InteractiveTile.prototype = Object.create(Tile.prototype);
@@ -42,15 +47,6 @@ InteractiveTile.prototype.query = function query(p) {
       }
     }
   }
-};
-
-InteractiveTile.prototype._createCanvas =  function(size) {
-  let canvas = document.createElement('canvas');
-
-  canvas.width = size;
-  canvas.height = size;
-
-  return canvas;
 };
 
 InteractiveTile.prototype._beforeFeatureDraw = function _beforeFeatureDraw(feature, style) {

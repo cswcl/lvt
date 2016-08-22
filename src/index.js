@@ -102,22 +102,6 @@ const VectorTileLayer = L.GridLayer.extend({
             reader.readAsArrayBuffer(blob);
           });
         });
-      })
-      .then(function(vectorTile) {
-        // Normalize feature getters into actual instanced features
-        for (let layerName in vectorTile.layers) {
-          let features = [];
-
-          for (let i = 0; i < vectorTile.layers[layerName].length; i++) {
-            let feature = vectorTile.layers[layerName].feature(i);
-            feature.geometry = feature.loadGeometry();
-            features.push(feature);
-          }
-
-          vectorTile.layers[layerName].features = features;
-        }
-
-        return vectorTile;
       });
   }
 });

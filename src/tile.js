@@ -1,9 +1,13 @@
 'use strict';
 
-function Tile(coords, tileSize) {
+function Tile(coords, tileSize, canvas) {
+  if (canvas.width !== tileSize || canvas.height !== tileSize) {
+    throw new Error(`canvas size must be ${tileSize}x${tileSize}`);
+  }
+
   this._coords = coords;
   this._size = tileSize;
-  this._canvas = this._createCanvas(this._size);
+  this._canvas = canvas;
   this._ctx = this._canvas.getContext('2d');
   this._layers = {};
   this._currentStyle = null;
@@ -14,7 +18,10 @@ Tile.LINESTRING = 2;
 Tile.POLYGON = 3;
 
 Tile.prototype.addVTLayer = function addVTLayer(layer) {
-  layer.pxPerExtent = this._size / layer.extent;
+  if (!layer.features) {
+    this.prepareVTLayer(layer, this._size);
+  }
+
   this._layers[layer.name] = layer;
 };
 
@@ -25,15 +32,6 @@ Tile.prototype.draw = function draw(getStyle) {
 
     for (let i = 0, n = features.length; i < n; i++) {
       let feature = features[i];
-
-      if (!feature.geometry) {
-        feature.geometry = feature.loadGeometry();
-      }
-
-      if (!feature._parts) {
-        this._mkFeatureParts(feature, layer.pxPerExtent);
-      }
-
       let style = getStyle(feature, this._coords.z);
 
       if (this._beforeFeatureDraw) {
@@ -57,6 +55,21 @@ Tile.prototype.draw = function draw(getStyle) {
   }
 };
 
+Tile.prototype.prepareVTLayer = function prepareVTLayer(vtLayer, tileSize) {
+  let features = [];
+  let pxPerExtent = tileSize / vtLayer.extent;
+
+  vtLayer.pxPerExtent = pxPerExtent;
+
+  for (let i = 0; i < vtLayer.length; i++) {
+    let feature = vtLayer.feature(i);
+    feature.geometry = feature.loadGeometry();
+    this._mkFeatureParts(feature, pxPerExtent);
+    features.push(feature);
+  }
+
+  vtLayer.features = features;
+};
 
 Tile.prototype._applyStyle = function _applyStyle(style) {
   let ctx = this._ctx;
@@ -138,10 +151,6 @@ Tile.prototype._mkFeatureParts = function _mkFeatureParts(feat, pxPerExtent) {
 
     feat._parts.push(part);
   }
-};
-
-Tile.prototype._createCanvas = function _createCanvas() {
-  throw new Error('function Tile.prototype._createCanvas must be implemented by Child Classes');
 };
 
 module.exports = Tile;
