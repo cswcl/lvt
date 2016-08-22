@@ -6,7 +6,7 @@ tiles](https://github.com/mapbox/vector-tile-spec).
 ## Instalación
 
 ```
-npm install --save git+ssh://git@bitbucket.org/csw-consultores-ambientales/leaflet-vector-tile.git#v0.1.0
+npm install --save git+ssh://git@bitbucket.org/csw-consultores-ambientales/leaflet-vector-tile.git#v0.1.1
 ```
 
 ## API
