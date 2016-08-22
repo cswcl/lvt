@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no7 test specified\" && exit 1",
     "compile": "mkdir -p lib && babel src --out-dir lib",
-    "prepublish": "npm run compile"
+    "postinstall": "npm run compile"
   },
   "repository": {
     "type": "git",
