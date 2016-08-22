@@ -2,9 +2,11 @@
   "name": "leaflet-vector-tile",
   "version": "0.1.1",
   "description": "Renderiza mapbox vector tiles",
-  "main": "src/index.js",
+  "main": "lib/index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no7 test specified\" && exit 1",
+    "compile": "mkdir -p lib && babel src --out-dir lib",
+    "prepublish": "npm run compile"
   },
   "repository": {
     "type": "git",
@@ -18,10 +20,15 @@
   "author": "Jorge Godoy <godoy.jf@gmail.com>",
   "homepage": "https://bitbucket.org/csw-consultores-ambientales/leaflet-vector-tile#readme",
   "dependencies": {
+    "babel-cli": "^6.11.4",
+    "babel-preset-es2015": "^6.13.2",
     "csscolorparser": "^1.0.2",
     "leaflet": "^1.0.0-rc.3",
     "mapbox-gl-function": "^1.2.1",
     "pbf": "^2.0.1",
     "vector-tile": "^1.3.0"
+  },
+  "babel": {
+    "presets": ["es2015"]
   }
 }
