@@ -128,6 +128,14 @@ function).
 
 ## Changelog
 
+**v0.1.2**:
+
+  - Sirve los archivos compilados a es5.
+
+**v0.1.1**:
+
+  - Refactoriza libreria.
+
 **v0.1.0**:
 
   - (breaking change) cambia la opción `getStyle` por `style`.
