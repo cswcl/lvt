@@ -68,7 +68,8 @@ const VectorTileLayer = L.GridLayer.extend({
     for (let key in this._tiles) {
       let tile = this._tiles[key];
       let interactiveTile = tile.el._interactiveTile;
-      interactiveTile.draw(this.options.style);
+      let clean = true;
+      interactiveTile.draw(this.options.style, clean);
     }
   },
 
