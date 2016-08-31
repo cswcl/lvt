@@ -28,7 +28,6 @@ function sqClosestPointOnSegment(p, p1, p2, sqDist) {
   return sqDist ? dx * dx + dy * dy : {x, y};
 }
 
-
 // Returns the distance between point `p` and segment `p1` to `p2`.
 // see: leaflet/src/geometry/LineUtil.js
 function pointToSegmentDistance(p, p1, p2) {
@@ -42,7 +41,59 @@ function distance(p1, p2) {
   return Math.sqrt(dx * dx + dy * dy);
 }
 
+// cartesianProduct genera todas las combinaciones posibles entre arrays
+// cartesianProduct([[1,2],[3,4]])
+// [ [ 1, 3 ], [ 1, 4 ], [ 2, 3 ], [ 2, 4 ] ]
+function cartesianProduct(arr) {
+  return arr.reduce(function(a, b) {
+    return a.map(function(x) {
+      return b.map(function(y) {
+        return x.concat(y);
+      });
+    }).reduce(function(a,b) {
+      return a.concat(b);
+    }, []);
+  }, [[]]);
+}
+
+function zipObject(keys, values) {
+  let obj = {};
+
+  for (let i = 0, n = keys.length; i < n; i++) {
+    obj[keys[i]] = values[i];
+  }
+
+  return obj;
+}
+
+function sort(arr) {
+  if (!arr.length) {
+    return arr;
+  }
+  if (typeof arr[0] === 'number') {
+    return arr.sort((a, b) => a - b);
+  }
+
+  return arr.sort();
+}
+
+
+function unique(arr) {
+  // asume arreglo ordenado
+  for (let i = arr.length - 1; i >= 0; i--) {
+    if (arr[i] === arr[i - 1]) {
+      arr.splice(i, 1);
+    }
+  }
+
+  return arr;
+}
+
 module.exports = {
   pointToSegmentDistance,
-  distance
+  distance,
+  cartesianProduct,
+  zipObject,
+  sort,
+  unique
 };
