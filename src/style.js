@@ -3,6 +3,17 @@
 const glfun = require('mapbox-gl-function');
 const parseColorString = require('csscolorparser').parseCSSColor;
 
+const VALID_CANVAS_STYLE_PROPERTIES = [
+  'fillStyle',
+  'strokeStyle',
+  'lineWidth',
+  'lineCap',
+  'lineJoin',
+  'miterLimit',
+  'linedash',
+  'lineDashOffset'
+];
+
 /*
   Style: {
     <key>: <value>,
@@ -91,8 +102,23 @@ function parseStyle(style) {
   };
 }
 
+function applyStyle(style, context) {
+  let props = VALID_CANVAS_STYLE_PROPERTIES;
+
+  if (context._current_style === style) {
+    return;
+  }
+
+  for (let i = 0, n = props.length; i < n; i++) {
+    context[props[i]] = style[props[i]];
+  }
+
+  context._current_style = style;
+}
+
 module.exports = {
-  parseStyle
+  parseStyle,
+  applyStyle
 };
 
 

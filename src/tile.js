@@ -1,5 +1,7 @@
 'use strict';
 
+const applyStyle = require('./style').applyStyle;
+
 function Tile(coords, tileSize, canvas) {
   if (canvas.width !== tileSize || canvas.height !== tileSize) {
     throw new Error(`canvas size must be ${tileSize}x${tileSize}`);
@@ -38,7 +40,7 @@ Tile.prototype.draw = function draw(getStyle) {
         this._beforeFeatureDraw(feature, style);
       }
 
-      this._applyStyle(style);
+      applyStyle(style, this._ctx);
 
       switch (feature.type) {
         case Tile.POINT:
@@ -69,22 +71,6 @@ Tile.prototype.prepareVTLayer = function prepareVTLayer(vtLayer, tileSize) {
   }
 
   vtLayer.features = features;
-};
-
-Tile.prototype._applyStyle = function _applyStyle(style) {
-  let ctx = this._ctx;
-
-  if (style === this._currentStyle) {
-    return;
-  }
-
-  for (let k in style) {
-    if (ctx[k]) {
-      ctx[k] = style[k];
-    }
-  }
-
-  this._currentStyle = style;
 };
 
 Tile.prototype._drawPoint = function _drawPoint(geometry) {
