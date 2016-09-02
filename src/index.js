@@ -23,7 +23,7 @@ const VectorTileLayer = L.GridLayer.extend({
   createTile: function(coords, done) {
     let tile = new InteractiveTile(coords, this.getTileSize().x); // this assumes square tiles
     let vectorTilePromise = this._getVectorTilePromise(coords);
-    let style = this.options.style;
+    let style = this._style;
 
     vectorTilePromise.then(function renderTile(vectorTile) {
       for (let layerId in vectorTile.layers) {
@@ -57,7 +57,12 @@ const VectorTileLayer = L.GridLayer.extend({
   },
 
   setStyle: function(style) {
-    this.options.style = typeof style === 'function' ? style : parseStyle(style);
+    if (typeof style !== 'object') {
+      throw new Error('style must be an object');
+    }
+
+    this._styleDef = style;
+    this._style = parseStyle(style);
   },
 
   // esta función se nombró reRender en vez de redraw porque redraw ya esta definida en leaflet
@@ -67,7 +72,7 @@ const VectorTileLayer = L.GridLayer.extend({
       let tile = this._tiles[key];
       let interactiveTile = tile.el._interactiveTile;
       let clean = true;
-      interactiveTile.draw(this.options.style, clean);
+      interactiveTile.draw(this._style, clean);
     }
   },
 

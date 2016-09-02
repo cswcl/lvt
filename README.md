@@ -44,19 +44,12 @@ let map = L.map('map');
 
 let vectorTileOptions = {
   pane: 'overlayPane',
-  style: function(feature, zoom) {
+  style: {
     // canvas options
     // https://developer.mozilla.org/en-US/docs/Web/API/Canvas_API/Tutorial/Applying_styles_and_colors
-    let style = {
-      lineWidth: 2,
-      strokeStyle: '#55AAFF',
-      fillStyle: 'rgba(0, 170, 255, 0.25)'
-    };
-
-    if (zoom >= 10) {
-      style.strokeStyle = '#AA5500';
-    }
-    return style;
+    lineWidth: 2,
+    strokeStyle: '#55AAFF',
+    fillStyle: 'rgba(0, 170, 255, 0.25)'
   }
 };
 
@@ -74,48 +67,20 @@ map.on('click', function(e) {
 
 ## Style
 
-La opción `style` que se pasa al crear un `VectorTileLayer` soporta
-dos tipos de valores posibles.  El primero es una función que recibe como
-argumentos el `feature` y el `zoom` y retorna las
-[propiedades](https://developer.mozilla.org/en-
-US/docs/Web/API/Canvas_API/Tutorial/Applying_styles_and_colors) que se deben
-aplicar al contexto del canvas. La segunda opción es que `style` sea un objeto
-json con la estructura que se menciona más adelante.
+La opción `style` que se pasa al crear un `VectorTileLayer` es un objeto donde las
+keys corresponden a [propiedades](https://developer.mozilla.org/en-
+US/docs/Web/API/Canvas_API/Tutorial/Applying_styles_and_colors) que se pueden aplicar
+al contexto del Canvas.
 
-Ejemplo de función style:
-
-```javascript
-vectorTileOptions.style = function style(feature, zoom) {
-  let st = {
-    lineWidth: 2,
-    strokeStyle: '#55AAFF',
-    fillStyle: 'rgba(0, 170, 255, 0.25)'
-  };
-
-  if (zoom >= 10) {
-    st.strokeStyle = '#AA5500';
-  }
-  return st;
-}
-```
-
-Adicionalmente este módulo viene con parser de estilos en formato json. De
-esta forma el ejemplo anterior se puede escribir de la siguiente forma.
+Ejemplo:
 
 ```
 vectorTileOptions.style = {
   lineWidth: 2,
   fillStyle: 'rgba(0, 170, 255, 0.25)',
-  strokeStyle: {
-    type: 'interval',
-    stops: [[0, '#55AAFF'], [10, '#AA5500']]
-  }
+  strokeStyle: '#55AAFF'
 };
 ```
-
-Este formato tiene la ventaja de poder almacenar y transmitir el estilo en
-formato json. Además las opciones de interpolación permiten facilmente definir
-estilos en una escala continua, por intervalos o por categorias.
 
 Las `key` el objeto de estilo son las propiedades que se aplicarán al contexto
 del canvas. Los values pueden ser los valores correspondientes a esas
@@ -130,6 +95,9 @@ function).
 
 **master**
 
+  - (breaking change) la opción style ya no soporta una función como valor posible.
+    La razón de esto, es que la generación de leyenda sólo está disponible para
+    definición de estilo en formato json.
   - Define estilo por defecto simple en `style.js`
 
 **v0.1.3**
