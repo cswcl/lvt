@@ -42,7 +42,11 @@ const VALID_CANVAS_STYLE_PROPERTIES = [
 
 */
 
-let defaultStyle = {};
+let defaultStyle = {
+  lineWidth: 1,
+  strokeStyle: '#000',
+  fillStyle: '#00f'
+};
 
 // value es de tipo mapbox-gl-function
 function prepareInterpolatedValue(value) {
@@ -67,6 +71,7 @@ function convertInterpolatedValue(value) {
 }
 
 function parseStyle(style) {
+  style = JSON.parse(JSON.stringify(style || {}));
   style = Object.assign({}, defaultStyle, style);
 
   // Buscar propiedades que tienen definición de tipo mapbox-gl-function
@@ -117,6 +122,7 @@ function applyStyle(style, context) {
 }
 
 module.exports = {
+  defaultStyle,
   parseStyle,
   applyStyle
 };

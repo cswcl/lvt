@@ -128,6 +128,10 @@ function).
 
 ## Changelog
 
+**master**
+
+  - Define estilo por defecto simple en `style.js`
+
 **v0.1.3**
 
   - agrega funcionalidad para generar y dibujar leyendas

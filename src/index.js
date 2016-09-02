@@ -7,19 +7,17 @@ const L = require('leaflet');
 const InteractiveTile = require('./interactive-tile');
 const parseStyle = require('./style').parseStyle;
 
-const defaultStyle = {};
 
 const VectorTileLayer = L.GridLayer.extend({
   options: {
-    subdomains: 'abc',  // Like L.TileLayer
-    style: () => defaultStyle
+    subdomains: 'abc'  // Like L.TileLayer
   },
 
 
   initialize: function(url, options) {
     L.GridLayer.prototype.initialize.call(this, options);
     this._url = url;
-    this.setStyle(options.style);
+    this.setStyle(options.style || {});
   },
 
   createTile: function(coords, done) {
