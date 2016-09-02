@@ -128,6 +128,11 @@ function).
 
 ## Changelog
 
+**master**
+
+  - agrega funcionalidad para generar y dibujar leyendas
+  - (fix) reRender borra los tiles antes de redibujarlos
+
 **v0.1.2**:
 
   - Sirve los archivos compilados a es5.
