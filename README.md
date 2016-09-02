@@ -29,6 +29,8 @@ Un objeto de tipo `VectorTileLayer` tiene los siguientes métodos disponibles:
 
 - **setStyle(style):**
   permite cambiar el estilo de los canvas. Esto no redibuja automaticamente los tiles.
+- **getStyle(style):**
+  obtiene el estilo utilizado en la capa.
 - **reRender():**
   redibuja los tiles con el estilo actual.
 - **query(latlng):**
@@ -95,6 +97,7 @@ function).
 
 **master**
 
+  - Agrega metodo `getStyle` para obtener el estilo de la capa.
   - (breaking change) la opción style ya no soporta una función como valor posible.
     La razón de esto, es que la generación de leyenda sólo está disponible para
     definición de estilo en formato json.
