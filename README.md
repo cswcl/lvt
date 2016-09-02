@@ -6,7 +6,7 @@ tiles](https://github.com/mapbox/vector-tile-spec).
 ## Instalación
 
 ```
-npm install --save git+ssh://git@bitbucket.org/csw-consultores-ambientales/leaflet-vector-tile.git#v0.1.2
+npm install --save git+ssh://git@bitbucket.org/csw-consultores-ambientales/leaflet-vector-tile.git#v0.1.3
 ```
 
 ## API
@@ -128,7 +128,7 @@ function).
 
 ## Changelog
 
-**master**
+**v0.1.3**
 
   - agrega funcionalidad para generar y dibujar leyendas
   - (fix) reRender borra los tiles antes de redibujarlos
