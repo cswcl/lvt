@@ -15,9 +15,10 @@ const VectorTileLayer = L.GridLayer.extend({
 
 
   initialize: function(url, options) {
+    const noReRender = false;
     L.GridLayer.prototype.initialize.call(this, options);
     this._url = url;
-    this.setStyle(options.style || {});
+    this.setStyle(options.style || {}, noReRender);
   },
 
   createTile: function(coords, done) {
@@ -56,13 +57,17 @@ const VectorTileLayer = L.GridLayer.extend({
     }
   },
 
-  setStyle: function(style) {
+  setStyle: function(style, reRender = true) {
     if (typeof style !== 'object') {
       throw new Error('style must be an object');
     }
 
     this._styleDef = style;
     this._style = parseStyle(style);
+
+    if (reRender) {
+      this.reRender();
+    }
   },
 
   getStyle: function() {
