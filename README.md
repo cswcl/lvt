@@ -30,8 +30,12 @@ Un objeto de tipo `VectorTileLayer` tiene los siguientes métodos disponibles:
 - **setStyle(style):**
   permite cambiar el estilo con el que se dibujan los vectores. Si ya hay tiles
   dibujados, son redibujados automaticamente.
-- **getStyle(style):**
+- **getStyle():**
   obtiene el estilo utilizado en la capa.
+- **getStyleFn():**
+  obtiene la función generadora de estilos. La función que retorna recibe como argumentos
+  un feature y un zoom y retorna un estilo con las funciones de interpolación resultas a
+  valores concretos.
 - **reRender():**
   redibuja los tiles con el estilo actual.
 - **query(latlng):**
@@ -115,6 +119,10 @@ vectorTileOptions.style = {
 ```
 
 ## Changelog
+
+**master**
+
+  - Agrega función `getStyleFn` para obtener la función generadora de estilos.
 
 **0.2.0**
 

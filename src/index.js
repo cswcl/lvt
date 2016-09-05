@@ -74,6 +74,10 @@ const VectorTileLayer = L.GridLayer.extend({
     return this._styleDef;
   },
 
+  getStyleFn: function() {
+    return this._styleFn;
+  },
+
   // esta función se nombró reRender en vez de redraw porque redraw ya esta definida en leaflet
   // y permite redibujar un tile pero descargando de nuevo la información.
   reRender: function() {
