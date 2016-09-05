@@ -64,10 +64,10 @@ let drawer = {
 };
 
 
-function drawSymbol(getStyle, symbol) {
+function drawSymbol(styleFn, symbol) {
   let fakeFeature = {properties: symbol.data},
       zoom = symbol.data.zoom || 0,
-      style = getStyle(fakeFeature, zoom),
+      style = styleFn(fakeFeature, zoom),
       canvas = document.createElement('canvas');
 
   canvas.width = 24;

@@ -26,7 +26,7 @@ Tile.prototype.addVTLayer = function addVTLayer(layer) {
   this._layers[layer.name] = layer;
 };
 
-Tile.prototype.draw = function draw(getStyle, clean) {
+Tile.prototype.draw = function draw(styleFn, clean) {
   if (clean) {
     this._ctx.clearRect(0, 0, this._size, this._size);
   }
@@ -37,7 +37,7 @@ Tile.prototype.draw = function draw(getStyle, clean) {
 
     for (let i = 0, n = features.length; i < n; i++) {
       let feature = features[i];
-      let style = getStyle(feature, this._coords.z);
+      let style = styleFn(feature, this._coords.z);
 
       if (this._beforeFeatureDraw) {
         this._beforeFeatureDraw(feature, style);

@@ -24,7 +24,7 @@ const VectorTileLayer = L.GridLayer.extend({
   createTile: function(coords, done) {
     let tile = new InteractiveTile(coords, this.getTileSize().x); // this assumes square tiles
     let vectorTilePromise = this._getVectorTilePromise(coords);
-    let style = this._style;
+    let styleFn = this._styleFn;
 
     vectorTilePromise.then(function renderTile(vectorTile) {
       for (let layerId in vectorTile.layers) {
@@ -32,7 +32,7 @@ const VectorTileLayer = L.GridLayer.extend({
         tile.addVTLayer(layer);
       }
 
-      tile.draw(style);
+      tile.draw(styleFn);
       L.Util.requestAnimFrame(done);
     });
 
@@ -57,13 +57,13 @@ const VectorTileLayer = L.GridLayer.extend({
     }
   },
 
-  setStyle: function(style, reRender = true) {
-    if (typeof style !== 'object') {
+  setStyle: function(styleDef, reRender = true) {
+    if (typeof styleDef !== 'object') {
       throw new Error('style must be an object');
     }
 
-    this._styleDef = style;
-    this._style = parseStyle(style);
+    this._styleDef = styleDef;
+    this._styleFn = parseStyle(styleDef);
 
     if (reRender) {
       this.reRender();
@@ -81,7 +81,7 @@ const VectorTileLayer = L.GridLayer.extend({
       let tile = this._tiles[key];
       let interactiveTile = tile.el._interactiveTile;
       let clean = true;
-      interactiveTile.draw(this._style, clean);
+      interactiveTile.draw(this._styleFn, clean);
     }
   },
 

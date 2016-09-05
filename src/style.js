@@ -49,36 +49,36 @@ function convertInterpolatedValue(value) {
   return value;
 }
 
-function parseStyle(style) {
-  style = JSON.parse(JSON.stringify(style || {}));
-  style = Object.assign({}, defaultStyle, style);
+function parseStyle(styleDef) {
+  styleDef = JSON.parse(JSON.stringify(styleDef || {}));
+  styleDef = Object.assign({}, defaultStyle, styleDef);
 
   // Buscar propiedades que tienen definición de tipo mapbox-gl-function
-  let functionProperties = Object.keys(style)
-    .filter((key) => typeof style[key] === 'object');
+  let functionProperties = Object.keys(styleDef)
+    .filter((key) => typeof styleDef[key] === 'object');
 
   // Si todas las propiedades son constantes retornar una función que retorna
   // el mismo estilo pasado como argumento
   if (!functionProperties.length) {
-    return () => style;
+    return () => styleDef;
   }
 
   // Cada una de los valores definidos como mapbox-gl-function se deben transformar
   // a una función de interpolación. Pero para que los colores funcionen correctamente
   // con la función de interpolación, se deben transformar a arreglos de numeros.
   functionProperties.forEach(function(key) {
-    let value = style[key];
+    let value = styleDef[key];
     prepareInterpolatedValue(value);
-    style[key] = glfun.interpolated(value);
+    styleDef[key] = glfun.interpolated(value);
   });
 
 
   return function(feature, zoom) {
-    let res = Object.assign({}, style);
+    let res = Object.assign({}, styleDef);
     let properties = feature.properties;
 
     functionProperties.forEach(function(key) {
-      let value = style[key](zoom, properties);
+      let value = styleDef[key](zoom, properties);
       res[key] = convertInterpolatedValue(value);
     });
 
