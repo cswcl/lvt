@@ -118,6 +118,48 @@ vectorTileOptions.style = {
 };
 ```
 
+## Legend
+
+Este proyecto incluye un modulo para la generación y renderizado de simbolos de leyenda.
+El modulo se encuentra en `src/legend` y se puede acceder mediante;
+
+```
+const legend = require('leaflet-vector-tile/lib/legend');
+
+```
+
+Un simbolo es un objeto que define las propiedades necesarias para dibujar un simbolo más
+un titulo. La propiedad geom, indica que icono se debe dibujar, puede ser `point`, `line`
+o `polygon`. La propiedad data es objeto con propiedades que terminaran las caracteristicas
+del icono. El funcionamiento es el siguiente, con todas las propiedades de data, excepto zoom,
+se construye un feature. Luego con ese feature y el zoom se puede obtener un estilo con el que
+finalmente se dibujará el icono.
+
+```
+let symbol = {
+  title: 'foo',
+  geom: 'line', //valid: 'point', 'line', 'polygon'
+  data: {
+    zoom: 15,
+    foo: 'bar',
+    buz: 'lol'
+  }
+}
+```
+
+
+`legend` pone a disposición dos metodos:
+
+  - **createSymbolsFromStyle(style, geom):**
+    Esta función recibe como argumento un estilo y tipo de geometria(`point`, `line`, `polygon`)
+    y retorna un arreglo con objetos symbolos representativos del estilo.
+
+  - **drawSymbol(styleFn, symbol):**
+    Esta función recibe como argumento una función generadora de estilos, como la retornada
+    por `VectorTileLayer.getStyleFn` y un objeto que define un simbolo y retorna un canvas
+    con el simbolo dibujado.
+
+
 ## Changelog
 
 **0.2.1**
