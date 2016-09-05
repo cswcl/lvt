@@ -6,7 +6,7 @@ tiles](https://github.com/mapbox/vector-tile-spec).
 ## Instalación
 
 ```
-npm install --save git+ssh://git@bitbucket.org/csw-consultores-ambientales/leaflet-vector-tile.git#v0.2.0
+npm install --save git+ssh://git@bitbucket.org/csw-consultores-ambientales/leaflet-vector-tile.git#v0.2.1
 ```
 
 ## API
@@ -120,7 +120,7 @@ vectorTileOptions.style = {
 
 ## Changelog
 
-**master**
+**0.2.1**
 
   - Agrega función `getStyleFn` para obtener la función generadora de estilos.
 
