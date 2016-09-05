@@ -1,5 +1,6 @@
 'use strict';
 /* global document */
+
 const util = require('./util');
 const applyStyle = require('./style').applyStyle;
 const pad = 4;
@@ -25,8 +26,8 @@ let drawer = {
     applyStyle(style, ctx);
     ctx.beginPath();
     ctx.arc(hw, hh, radius, 2 * Math.PI, false);
-    ctx.fill();
-    ctx.stroke();
+    style.fill && ctx.fill();
+    style.line && ctx.stroke();
 
     return canvas;
   },
@@ -41,7 +42,7 @@ let drawer = {
     ctx.beginPath();
     ctx.moveTo(pad, h - pad);
     ctx.lineTo(w - pad, pad);
-    ctx.stroke();
+    style.line && ctx.stroke();
 
     return canvas;
   },
@@ -51,12 +52,12 @@ let drawer = {
         w = canvas.width,
         h = canvas.height;
 
-
     applyStyle(style, ctx);
+
     ctx.beginPath();
     ctx.rect(pad, pad, w - 2 * pad, h - 2 * pad);
-    ctx.fill();
-    ctx.stroke();
+    style.fill && ctx.fill();
+    style.line && ctx.stroke();
 
     return canvas;
   }

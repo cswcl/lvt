@@ -3,49 +3,28 @@
 const glfun = require('mapbox-gl-function');
 const parseColorString = require('csscolorparser').parseCSSColor;
 
-const VALID_CANVAS_STYLE_PROPERTIES = [
-  'fillStyle',
-  'strokeStyle',
-  'lineWidth',
-  'lineCap',
-  'lineJoin',
-  'miterLimit',
-  'linedash',
-  'lineDashOffset'
-];
+const MAP_STYLE_PROPS_TO_CANVAS_PROPS = {
+  //'marker': no se aplica al contexto
+  //'marker-size': no se aplica al contexto
+  //'line': no se aplica al contexto
+  'line-width': 'lineWidth',
+  'line-color': 'strokeStyle',
+  'line-cap': 'lineCap',
+  'line-join': 'lineJoin',
+  //'fill': no se aplica al contexto,
+  'fill-color': 'fillStyle'
+};
 
-/*
-  Style: {
-    <key>: <value>,
-    ...
-  }
-
-  key: strokeStyle || fillStyle || lineWidth
-
-  // el tipo de <value> depende de <key>.
-  // Pero todos los <key> aceptan adicionalmente el tipo <function>
-  value: <number> || <color> || <mapbox-gl-function>
-
-  mapbox-gl-function: ver https://www.mapbox.com/mapbox-gl-style-spec/#types-function
-
-  Ejemplo:
-
-  let myStyle = {
-    lineWidth: 2,
-    strokeStyle: {
-      stops: [
-        [0, '#55AAFF'],
-        [10, '#AA5500']
-      ]
-    }
-  }
-
-*/
-
-let defaultStyle = {
-  lineWidth: 1,
-  strokeStyle: '#000',
-  fillStyle: '#00f'
+const defaultStyle = {
+  'marker': 'circle',
+  'marker-size': 10,
+  'line': true,
+  'line-width': 1,
+  'line-color': '#000',
+  'line-cap': 'round',
+  'line-join': 'round',
+  'fill': true,
+  'fill-color': '#00f'
 };
 
 // value es de tipo mapbox-gl-function
@@ -108,15 +87,18 @@ function parseStyle(style) {
 }
 
 function applyStyle(style, context) {
-  let props = VALID_CANVAS_STYLE_PROPERTIES;
-
   if (context._current_style === style) {
     return;
   }
 
-  for (let i = 0, n = props.length; i < n; i++) {
-    context[props[i]] = style[props[i]];
-  }
+  let keys = Object.keys(MAP_STYLE_PROPS_TO_CANVAS_PROPS);
+
+  keys.forEach(function(key) {
+    if (typeof style[key] !== 'undefined') {
+      let canvasProp = MAP_STYLE_PROPS_TO_CANVAS_PROPS[key];
+      context[canvasProp] = style[key];
+    }
+  });
 
   context._current_style = style;
 }

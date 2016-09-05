@@ -57,9 +57,8 @@ InteractiveTile.prototype._calculeClickTolerance = function _calculeClickToleran
   let touchTolerance = (L.Browser.touch ? 10 : 2);
 
   if (feature.type === Tile.POINT) {
-    // TODO: obtener valor real del radio a partir de style
     // TODO: considerar que los marcadores despues incluiraran otras formas ademas de circulo
-    let markerRadius = 5;
+    let markerRadius = style['marker-size'] / 2;
     return markerRadius + touchTolerance;
   }
 

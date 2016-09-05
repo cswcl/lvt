@@ -48,11 +48,9 @@ let map = L.map('map');
 let vectorTileOptions = {
   pane: 'overlayPane',
   style: {
-    // canvas options
-    // https://developer.mozilla.org/en-US/docs/Web/API/Canvas_API/Tutorial/Applying_styles_and_colors
-    lineWidth: 2,
-    strokeStyle: '#55AAFF',
-    fillStyle: 'rgba(0, 170, 255, 0.25)'
+    'line-width': 2,
+    'line-color': '#55AAFF',
+    'fill-color': 'rgba(0, 170, 255, 0.25)'
   }
 };
 
@@ -70,34 +68,57 @@ map.on('click', function(e) {
 
 ## Style
 
-La opción `style` que se pasa al crear un `VectorTileLayer` es un objeto donde las
-keys corresponden a [propiedades](https://developer.mozilla.org/en-
-US/docs/Web/API/Canvas_API/Tutorial/Applying_styles_and_colors) que se pueden aplicar
-al contexto del Canvas.
+La opción `style` que se pasa al crear un `VectorTileLayer` es un objeto donde
+las keys representan distintas opciones de renderizado. Dependiendo de la geometría
+a dibujar, el renderizado ocupa unas u otras propiedades.
 
-Ejemplo:
+Propiedades disponibles:
+
+| Propiedad     | Default        | Descripción                                              |
+| ------------- | -------------- | ---------------------------------------------------------|
+| marker        | 'circle'       | Tipo de marcador a usar. El único valor posible por ahora es circle.
+| marker-size   | 10             | Tamaño del marcador. El numero indicado, representa el ancho y el alto del marcador.
+| line          | true           | Define si se debe dibujar las lineas.
+| line-width    | 1              | Tamaño de la lineas en pixels.
+| line-color    | '#000'         | Color de la lineas. Se puede usar cualquier formato usado por canvas como rgb() o rgba().
+| line-cap      | 'round'        | Define la [forma](https://developer.mozilla.org/es/docs/Web/API/CanvasRenderingContext2D/lineCap) de terminación de la lineas.
+| line-join     | 'round'        | Defina la [forma](https://developer.mozilla.org/es/docs/Web/API/CanvasRenderingContext2D/lineJoin) de las esquinas de las lineas
+| fill          | true           | Define si se debe dibujar el relleno de las figuras.
+| fill-color    | '#00f'         | Define el color de relleno. Se puede usar cualquier formato usado por canvas como rgb() o rgba().
+
+
+Por ejemplo:
 
 ```
 vectorTileOptions.style = {
-  lineWidth: 2,
-  fillStyle: 'rgba(0, 170, 255, 0.25)',
-  strokeStyle: '#55AAFF'
+  'line-width': 2,
+  'line-color': '#55AAFF',
+  'fill-color': 'rgba(0, 170, 255, 0.25)'
 };
 ```
 
-Las `key` el objeto de estilo son las propiedades que se aplicarán al contexto
-del canvas. Los values pueden ser los valores correspondientes a esas
-propiedades o un objeto que tiene la definición de una función de
-interpolación de la misma forma en como está definida en la [especificación
-mapbox gl function](https://www.mapbox.com/mapbox-gl-style-spec/#types-
+Adicionalmente cada propiedad puede aceptar un objeto como valor que define una
+función de interpolación de la misma forma en como está definida en la
+[especificación de mapbox gl function](https://www.mapbox.com/mapbox-gl-style-spec/#types-
 function).
 
-
+Por ejemplo:
+```
+vectorTileOptions.style = {
+  'line-width': 2,
+  'fill-color': 'rgba(0, 170, 255, 0.25)',
+  'line-color': {
+    type: 'interval',
+    stops: [[0, '#55AAFF'], [10, '#AA5500']]
+  }
+};
+```
 
 ## Changelog
 
 **master**
 
+  - (breaking change) Se renombra y limita las propiedades posibles en el estilo.
   - (breaking change) `setStyle` redibuja automaticamente los tiles con el nuevo estilo.
   - Agrega metodo `getStyle` para obtener el estilo de la capa.
   - (breaking change) la opción style ya no soporta una función como valor posible.

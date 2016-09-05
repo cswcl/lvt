@@ -48,13 +48,13 @@ Tile.prototype.draw = function draw(getStyle, clean) {
 
       switch (feature.type) {
         case Tile.POINT:
-          this._drawPoint(feature._parts);
+          this._drawPoint(feature._parts, style);
           break;
         case Tile.LINESTRING:
-          this._drawLinestring(feature._parts);
+          this._drawLinestring(feature._parts, style);
           break;
         case Tile.POLYGON:
-          this._drawPolygon(feature._parts);
+          this._drawPolygon(feature._parts, style);
           break;
       }
     }
@@ -77,10 +77,14 @@ Tile.prototype.prepareVTLayer = function prepareVTLayer(vtLayer, tileSize) {
   vtLayer.features = features;
 };
 
-Tile.prototype._drawPoint = function _drawPoint(geometry) {
+Tile.prototype._drawPoint = function _drawPoint(geometry, style) {
   let parts = geometry,
       ctx = this._ctx,
-      radius = 5;
+      radius = style['marker-size'] / 2;
+
+  if (style.marker !== 'circle') {
+    return;
+  }
 
   for (let i = 0, n = parts.length; i < n; i++) {
     let points = parts[i];
@@ -88,15 +92,19 @@ Tile.prototype._drawPoint = function _drawPoint(geometry) {
       let point = points[j];
       ctx.beginPath();
       ctx.arc(point.x, point.y, radius, 0, 2 * Math.PI);
-      ctx.fill();
-      ctx.stroke();
+      style.fill && ctx.fill();
+      style.line && ctx.stroke();
     }
   }
 };
 
-Tile.prototype._drawLinestring = function _drawLinestring(geometry) {
+Tile.prototype._drawLinestring = function _drawLinestring(geometry, style) {
   let parts = geometry,
       ctx = this._ctx;
+
+  if (!style.line) {
+    return;
+  }
 
   for (let i = 0, n = parts.length; i < n; i++) {
     let points = parts[i];
@@ -109,9 +117,13 @@ Tile.prototype._drawLinestring = function _drawLinestring(geometry) {
   }
 };
 
-Tile.prototype._drawPolygon =  function _drawPolygon(geometry) {
+Tile.prototype._drawPolygon =  function _drawPolygon(geometry, style) {
   let parts = geometry,
       ctx = this._ctx;
+
+  if (!style.line && !style.fill) {
+    return;
+  }
 
   for (let i = 0, n = parts.length; i < n; i++) {
     let points = parts[i];
@@ -120,8 +132,8 @@ Tile.prototype._drawPolygon =  function _drawPolygon(geometry) {
       let point = points[j];
       ctx[j ? 'lineTo' : 'moveTo'](point.x, point.y);
     }
-    ctx.fill();
-    ctx.stroke();
+    style.fill && ctx.fill();
+    style.line && ctx.stroke();
   }
 };
 
