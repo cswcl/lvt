@@ -77,7 +77,6 @@ function sort(arr) {
   return arr.sort();
 }
 
-
 function unique(arr) {
   // asume arreglo ordenado
   for (let i = arr.length - 1; i >= 0; i--) {

@@ -12,7 +12,6 @@ function Tile(coords, tileSize, canvas) {
   this._canvas = canvas;
   this._ctx = this._canvas.getContext('2d');
   this._layers = {};
-  this._currentStyle = null;
 }
 
 Tile.POINT = 1;
