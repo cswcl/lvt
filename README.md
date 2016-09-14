@@ -162,6 +162,10 @@ let symbol = {
 
 ## Changelog
 
+**master**
+
+  - Corrige función query para linestring.
+
 **0.2.1**
 
   - Agrega función `getStyleFn` para obtener la función generadora de estilos.

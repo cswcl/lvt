@@ -62,8 +62,8 @@ InteractiveTile.prototype._calculeClickTolerance = function _calculeClickToleran
     return markerRadius + touchTolerance;
   }
 
-  if (style.lineWidth > 0) {
-    return style.lineWidth / 2 + touchTolerance;
+  if (style['line-width'] > 0) {
+    return style['line-width'] / 2 + touchTolerance;
   }
 };
 
