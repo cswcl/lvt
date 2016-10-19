@@ -33,7 +33,7 @@ const VectorTileLayer = L.GridLayer.extend({
       }
 
       tile.draw(styleFn);
-      L.Util.requestAnimFrame(done);
+      L.Util.requestAnimFrame(() => done());
     });
 
     let canvas = tile.getContainer();
