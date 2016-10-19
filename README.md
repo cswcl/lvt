@@ -6,7 +6,7 @@ tiles](https://github.com/mapbox/vector-tile-spec).
 ## Instalación
 
 ```
-npm install --save git+ssh://git@bitbucket.org/csw-consultores-ambientales/leaflet-vector-tile.git#v0.2.2
+npm install --save git+ssh://git@bitbucket.org/csw-consultores-ambientales/leaflet-vector-tile.git#v0.2.3
 ```
 
 ## API
@@ -161,6 +161,10 @@ let symbol = {
 
 
 ## Changelog
+
+**0.2.3**
+
+  - corrige error en llamada a callback para dar soporte a leaflet 1.0.1
 
 **0.2.2**
 
