@@ -40,6 +40,9 @@ Un objeto de tipo `VectorTileLayer` tiene los siguientes métodos disponibles:
   redibuja los tiles con el estilo actual.
 - **query(latlng):**
   Recibe como argumento un objeto leaflet LatLng y retorna el feature que esta en esa ubicación.
+- **filter(fn):**
+  Define una función para filtrar features. Sólo los features que pasen el filtro serán
+  renderizados. La función de filtrado recibe como argumento el feature.
 
 ## Ejemplo
 
@@ -161,6 +164,10 @@ let symbol = {
 
 
 ## Changelog
+
+**master**
+
+  - agrega función de filtrado
 
 **0.2.3**
 

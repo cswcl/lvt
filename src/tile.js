@@ -34,6 +34,7 @@ Tile.prototype.draw = function draw(styleFn, clean) {
   for (let layerId in this._layers) {
     let layer = this._layers[layerId];
     let features = layer.features;
+    features = features.filter(this.filter);
 
     for (let i = 0, n = features.length; i < n; i++) {
       let feature = features[i];
@@ -58,6 +59,11 @@ Tile.prototype.draw = function draw(styleFn, clean) {
       }
     }
   }
+};
+
+// by default render all
+Tile.prototype.filter = function() {
+  return true;
 };
 
 Tile.prototype.prepareVTLayer = function prepareVTLayer(vtLayer, tileSize) {

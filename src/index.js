@@ -18,6 +18,7 @@ const VectorTileLayer = L.GridLayer.extend({
     const noReRender = false;
     L.GridLayer.prototype.initialize.call(this, options);
     this._url = url;
+    this._filter = () => true;
     this.setStyle(options.style || {}, noReRender);
   },
 
@@ -25,6 +26,9 @@ const VectorTileLayer = L.GridLayer.extend({
     let tile = new InteractiveTile(coords, this.getTileSize().x); // this assumes square tiles
     let vectorTilePromise = this._getVectorTilePromise(coords);
     let styleFn = this._styleFn;
+
+    // set filter
+    tile.filter = (feature) => this._filter(feature);
 
     vectorTilePromise.then(function renderTile(vectorTile) {
       for (let layerId in vectorTile.layers) {
@@ -85,6 +89,12 @@ const VectorTileLayer = L.GridLayer.extend({
     const clean = true;
     this._eachTile(interactiveTile => interactiveTile.draw(this._styleFn, clean));
   },
+
+  filter: function(fn) {
+    this._filter = fn || (() => true);
+    this.reRender();
+  },
+
   _eachTile: function(fn) {
     for (let key in this._tiles) {
       let tile = this._tiles[key];
