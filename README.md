@@ -6,7 +6,7 @@ tiles](https://github.com/mapbox/vector-tile-spec).
 ## Instalación
 
 ```
-npm install --save git+ssh://git@bitbucket.org/csw-consultores-ambientales/leaflet-vector-tile.git#v0.2.3
+npm install --save git+ssh://git@bitbucket.org/csw-consultores-ambientales/leaflet-vector-tile.git#v0.2.4
 ```
 
 ## API
@@ -165,7 +165,7 @@ let symbol = {
 
 ## Changelog
 
-**master**
+**0.2.4**
 
   - agrega función de filtrado
 
