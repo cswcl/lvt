@@ -37,6 +37,7 @@ const VectorTileLayer = L.GridLayer.extend({
     });
 
     let canvas = tile.getContainer();
+    // save reference to interactiveTile.
     canvas._interactiveTile = tile;
 
     return canvas;
@@ -52,7 +53,7 @@ const VectorTileLayer = L.GridLayer.extend({
     let tile = this._tiles[tileKey];
 
     if (tile) {
-      let interactiveTile = tile.el._interactiveTile;
+      let interactiveTile = this._getInteractiveTile(tile);
       return interactiveTile.query({x: xy.x, y: xy.y});
     }
   },
@@ -81,12 +82,19 @@ const VectorTileLayer = L.GridLayer.extend({
   // esta función se nombró reRender en vez de redraw porque redraw ya esta definida en leaflet
   // y permite redibujar un tile pero descargando de nuevo la información.
   reRender: function() {
+    const clean = true;
+    this._eachTile(interactiveTile => interactiveTile.draw(this._styleFn, clean));
+  },
+  _eachTile: function(fn) {
     for (let key in this._tiles) {
       let tile = this._tiles[key];
-      let interactiveTile = tile.el._interactiveTile;
-      let clean = true;
-      interactiveTile.draw(this._styleFn, clean);
+      let interactiveTile = this._getInteractiveTile(tile);
+      fn(interactiveTile);
     }
+  },
+
+  _getInteractiveTile: function(leafletTile) {
+    return leafletTile.el._interactiveTile;
   },
 
   _getSubdomain: L.TileLayer.prototype._getSubdomain,
