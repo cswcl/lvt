@@ -168,6 +168,7 @@ let symbol = {
 **master**
 
  - (breaking change) se renombra función de filtrado `filter` a `setFilter`.
+ - (breaking change) la función query ahora retorna un geojson feature.
 
 **0.2.4**
 

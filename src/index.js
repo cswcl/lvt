@@ -58,7 +58,18 @@ const VectorTileLayer = L.GridLayer.extend({
 
     if (tile) {
       let interactiveTile = this._getInteractiveTile(tile);
-      return interactiveTile.query({x: xy.x, y: xy.y});
+      let vtFeature = interactiveTile.query({x: xy.x, y: xy.y});
+
+      if (!vtFeature) {
+        return null;
+      }
+
+      let feature = vtFeature.toGeoJSON(tileXY.x, tileXY.y, zoom);
+
+      // remove feature.id because is internaly. And we don't know what property is used as id
+      delete feature.id;
+
+      return feature;
     }
   },
 
