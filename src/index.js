@@ -90,7 +90,7 @@ const VectorTileLayer = L.GridLayer.extend({
     this._eachTile(interactiveTile => interactiveTile.draw(this._styleFn, clean));
   },
 
-  filter: function(fn) {
+  setFilter: function(fn) {
     this._filter = fn || (() => true);
     this.reRender();
   },
