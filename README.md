@@ -6,7 +6,7 @@ tiles](https://github.com/mapbox/vector-tile-spec).
 ## Instalación
 
 ```
-npm install --save git+ssh://git@bitbucket.org/csw-consultores-ambientales/leaflet-vector-tile.git#v0.2.4
+npm install --save git+ssh://git@bitbucket.org/csw-consultores-ambientales/leaflet-vector-tile.git#v0.3.0
 ```
 
 ## API
@@ -165,7 +165,7 @@ let symbol = {
 
 ## Changelog
 
-**master**
+**0.3.0**
 
  - (breaking change) se renombra función de filtrado `filter` a `setFilter`.
  - (breaking change) la función query ahora retorna un geojson feature.
