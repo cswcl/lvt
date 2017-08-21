@@ -29,6 +29,8 @@
     "@mapbox/vector-tile": "1.x"
   },
   "babel": {
-    "presets": ["es2015"]
+    "presets": [
+      "es2015"
+    ]
   }
 }

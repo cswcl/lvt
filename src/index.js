@@ -2,7 +2,7 @@
 /* globals fetch, FileReader */
 
 const Pbf = require('pbf');
-const vectorTile = require('vector-tile');
+const vectorTile = require('@mapbox/vector-tile');
 const L = require('leaflet');
 const InteractiveTile = require('./interactive-tile');
 const parseStyle = require('./style').parseStyle;
