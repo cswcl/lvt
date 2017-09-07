@@ -75,14 +75,14 @@ function drawSymbol(styleFn, symbol) {
 
   drawer[symbol.geom](canvas, style);
 
-  return canvas;
+  return canvas.toDataURL();
 }
 
 function createTitleFromSymbolData(data) {
   let conditions = [];
 
   for (let k in data) {
-    conditions.push(k + '=' + data[k]);
+    conditions.push(data[k]);
   }
 
   return conditions.join('&');
