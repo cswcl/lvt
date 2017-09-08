@@ -7,7 +7,7 @@ const pad = 4;
 
 /* symbol {
   title: 'foo',
-  geom: 'line', //valid: 'point', 'line', 'polygon'
+  geom: 'line', //valid: 'point', 'line', 'polygon', 'multipoint', 'multiline', 'multilinestring', 'multipolygon'
   data: {
     zoom: 15,
     foo: 'bar',
@@ -31,6 +31,9 @@ let drawer = {
 
     return canvas;
   },
+  multipoint: function(canvas, style) {
+    drawer['point'](canvas, style);
+  },
 
   line: function(canvas, style) {
     let ctx = canvas.getContext('2d'),
@@ -46,6 +49,12 @@ let drawer = {
 
     return canvas;
   },
+  multiline: function(canvas, style) {
+    drawer['line'](canvas, style);
+  },
+  multilinestring: function(canvas, style) {
+    drawer['line'](canvas, style);
+  },
 
   polygon: function(canvas, style) {
     let ctx = canvas.getContext('2d'),
@@ -60,6 +69,9 @@ let drawer = {
     style.line && ctx.stroke();
 
     return canvas;
+  },
+  multipolygon: function(canvas, style) {
+    drawer['polygon'](canvas, style);
   }
 };
 
@@ -74,7 +86,6 @@ function drawSymbol(styleFn, symbol) {
   canvas.height = 24;
 
   drawer[symbol.geom](canvas, style);
-
   return canvas.toDataURL();
 }
 
