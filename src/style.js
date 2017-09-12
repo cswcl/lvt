@@ -43,7 +43,7 @@ function prepareInterpolatedValue(value) {
 // value es resultado de la interpolación para una propiedad
 function convertInterpolatedValue(value) {
   if (Array.isArray(value)) {
-    return 'rgba(' + value.map((num) => Math.round(num)).join(',') + ')';
+    return `rgba(${  value.map((num) => Math.round(num)).join(',')  })`;
   }
 
   return value;
@@ -54,7 +54,7 @@ function parseStyle(styleDef) {
   styleDef = Object.assign({}, defaultStyle, styleDef);
 
   // Buscar propiedades que tienen definición de tipo mapbox-gl-function
-  let functionProperties = Object.keys(styleDef)
+  const functionProperties = Object.keys(styleDef)
     .filter((key) => typeof styleDef[key] === 'object');
 
   // Si todas las propiedades son constantes retornar una función que retorna
@@ -67,18 +67,18 @@ function parseStyle(styleDef) {
   // a una función de interpolación. Pero para que los colores funcionen correctamente
   // con la función de interpolación, se deben transformar a arreglos de numeros.
   functionProperties.forEach(function(key) {
-    let value = styleDef[key];
+    const value = styleDef[key];
     prepareInterpolatedValue(value);
     styleDef[key] = glfun.interpolated(value);
   });
 
 
   return function(feature, zoom) {
-    let res = Object.assign({}, styleDef);
-    let properties = feature.properties;
+    const res = Object.assign({}, styleDef);
+    const properties = feature.properties;
 
     functionProperties.forEach(function(key) {
-      let value = styleDef[key](zoom, properties);
+      const value = styleDef[key](zoom, properties);
       res[key] = convertInterpolatedValue(value);
     });
 
@@ -91,11 +91,11 @@ function applyStyle(style, context) {
     return;
   }
 
-  let keys = Object.keys(MAP_STYLE_PROPS_TO_CANVAS_PROPS);
+  const keys = Object.keys(MAP_STYLE_PROPS_TO_CANVAS_PROPS);
 
   keys.forEach(function(key) {
     if (typeof style[key] !== 'undefined') {
-      let canvasProp = MAP_STYLE_PROPS_TO_CANVAS_PROPS[key];
+      const canvasProp = MAP_STYLE_PROPS_TO_CANVAS_PROPS[key];
       context[canvasProp] = style[key];
     }
   });
@@ -108,5 +108,3 @@ module.exports = {
   parseStyle,
   applyStyle
 };
-
-

@@ -32,13 +32,13 @@ Tile.prototype.draw = function draw(styleFn, clean) {
   }
 
   for (let layerId in this._layers) {
-    let layer = this._layers[layerId];
+    const layer = this._layers[layerId];
     let features = layer.features;
     features = features.filter(this.filter);
 
     for (let i = 0, n = features.length; i < n; i++) {
-      let feature = features[i];
-      let style = styleFn(feature, this._coords.z);
+      const feature = features[i];
+      const style = styleFn(feature, this._coords.z);
 
       if (this._beforeFeatureDraw) {
         this._beforeFeatureDraw(feature, style);
@@ -67,13 +67,13 @@ Tile.prototype.filter = function() {
 };
 
 Tile.prototype.prepareVTLayer = function prepareVTLayer(vtLayer, tileSize) {
-  let features = [];
-  let pxPerExtent = tileSize / vtLayer.extent;
+  const features = [];
+  const pxPerExtent = tileSize / vtLayer.extent;
 
   vtLayer.pxPerExtent = pxPerExtent;
 
   for (let i = 0; i < vtLayer.length; i++) {
-    let feature = vtLayer.feature(i);
+    const feature = vtLayer.feature(i);
     feature.geometry = feature.loadGeometry();
     this._mkFeatureParts(feature, pxPerExtent);
     features.push(feature);
@@ -83,18 +83,18 @@ Tile.prototype.prepareVTLayer = function prepareVTLayer(vtLayer, tileSize) {
 };
 
 Tile.prototype._drawPoint = function _drawPoint(geometry, style) {
-  let parts = geometry,
-      ctx = this._ctx,
-      radius = style['marker-size'] / 2;
+  const parts = geometry;
+  const ctx = this._ctx;
+  const radius = style['marker-size'] / 2;
 
   if (style.marker !== 'circle') {
     return;
   }
 
   for (let i = 0, n = parts.length; i < n; i++) {
-    let points = parts[i];
+    const points = parts[i];
     for (let j = 0, m = points.length; j < m; j++) {
-      let point = points[j];
+      const point = points[j];
       ctx.beginPath();
       ctx.arc(point.x, point.y, radius, 0, 2 * Math.PI);
       style.fill && ctx.fill();
@@ -104,18 +104,18 @@ Tile.prototype._drawPoint = function _drawPoint(geometry, style) {
 };
 
 Tile.prototype._drawLinestring = function _drawLinestring(geometry, style) {
-  let parts = geometry,
-      ctx = this._ctx;
+  let parts = geometry;
+  let ctx = this._ctx;
 
   if (!style.line) {
     return;
   }
 
   for (let i = 0, n = parts.length; i < n; i++) {
-    let points = parts[i];
+    const points = parts[i];
     ctx.beginPath();
     for (let j = 0, m = points.length; j < m; j++) {
-      let point = points[j];
+      const point = points[j];
       ctx[j ? 'lineTo' : 'moveTo'](point.x, point.y);
     }
     ctx.stroke();
@@ -123,18 +123,18 @@ Tile.prototype._drawLinestring = function _drawLinestring(geometry, style) {
 };
 
 Tile.prototype._drawPolygon =  function _drawPolygon(geometry, style) {
-  let parts = geometry,
-      ctx = this._ctx;
+  const parts = geometry;
+  const ctx = this._ctx;
 
   if (!style.line && !style.fill) {
     return;
   }
 
   for (let i = 0, n = parts.length; i < n; i++) {
-    let points = parts[i];
+    const points = parts[i];
     ctx.beginPath();
     for (let j = 0, m = points.length; j < m; j++) {
-      let point = points[j];
+      const point = points[j];
       ctx[j ? 'lineTo' : 'moveTo'](point.x, point.y);
     }
     style.fill && ctx.fill();
@@ -144,15 +144,15 @@ Tile.prototype._drawPolygon =  function _drawPolygon(geometry, style) {
 
 // Escala coordenadas de los vector tiles a coordenadas de tile.
 Tile.prototype._mkFeatureParts = function _mkFeatureParts(feat, pxPerExtent) {
-  let rings = feat.geometry;
+  const rings = feat.geometry;
 
   feat._parts = [];
   for (let i = 0, n = rings.length; i < n; i++) {
-    let ring = rings[i];
-    let part = [];
+    const ring = rings[i];
+    const part = [];
 
     for (let j = 0, m = ring.length; j < m; j++) {
-      let coord = ring[j];
+      const coord = ring[j];
       part.push({x: coord.x * pxPerExtent, y: coord.y * pxPerExtent});
     }
 

@@ -7,8 +7,7 @@
     "mocha": true
   },
   "parserOptions": {
-    "ecmaVersion": 6,
-    "sourceType": "script"
+    "ecmaVersion": 2017
   },
   "rules": {
     "max-len": ["error", {
@@ -34,11 +33,26 @@
     "semi": [2, "always"],
     "no-console": 0,
     "space-before-blocks": 2,
-    "quotes": [2, "single"],
+    "prefer-template": "error",
+    "quotes": [2, "single", {
+      "allowTemplateLiterals": true,
+      }
+     ],
     "space-infix-ops": 2,
     "comma-dangle": ["error", "only-multiline"],
+    "comma-spacing": ["error", { "before": false, "after": true }],
+    "no-trailing-spaces": "error",
+    "no-irregular-whitespace": ["error", {
+      "skipStrings": true,
+      "skipComments": true,
+      "skipRegExps": true,
+      "skipTemplates": true
+      }
+    ],
     "strict": ["error", "global"],
     "curly": ["error", "all"],
-    "no-var": "error"
+    "no-var": "error",
+    "one-var": ["error", "never"],
+    "no-buffer-constructor": 2
   }
 }

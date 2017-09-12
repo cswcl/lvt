@@ -23,9 +23,9 @@ const VectorTileLayer = L.GridLayer.extend({
   },
 
   createTile: function(coords, done) {
-    let tile = new InteractiveTile(coords, this.getTileSize().x); // this assumes square tiles
-    let vectorTilePromise = this._getVectorTilePromise(coords);
-    let styleFn = this._styleFn;
+    const tile = new InteractiveTile(coords, this.getTileSize().x); // this assumes square tiles
+    const vectorTilePromise = this._getVectorTilePromise(coords);
+    const styleFn = this._styleFn;
 
     // set filter
     tile.filter = (feature) => this._filter(feature);
@@ -40,7 +40,7 @@ const VectorTileLayer = L.GridLayer.extend({
       L.Util.requestAnimFrame(() => done());
     });
 
-    let canvas = tile.getContainer();
+    const canvas = tile.getContainer();
     // save reference to interactiveTile.
     canvas._interactiveTile = tile;
 
@@ -48,23 +48,23 @@ const VectorTileLayer = L.GridLayer.extend({
   },
 
   query: function (latLng) {
-    let point = this._map.project(latLng);
-    let tileSize = this.getTileSize().x;  // this assumes square tiles
-    let tileXY = point.divideBy(tileSize).floor();
-    let xy = point.subtract(tileXY.multiplyBy(tileSize));
-    let zoom = this._map.getZoom();
-    let tileKey = this._tileCoordsToKey({x: tileXY.x, y: tileXY.y, z: zoom});
-    let tile = this._tiles[tileKey];
+    const point = this._map.project(latLng);
+    const tileSize = this.getTileSize().x;  // this assumes square tiles
+    const tileXY = point.divideBy(tileSize).floor();
+    const xy = point.subtract(tileXY.multiplyBy(tileSize));
+    const zoom = this._map.getZoom();
+    const tileKey = this._tileCoordsToKey({x: tileXY.x, y: tileXY.y, z: zoom});
+    const tile = this._tiles[tileKey];
 
     if (tile) {
-      let interactiveTile = this._getInteractiveTile(tile);
-      let vtFeature = interactiveTile.query({x: xy.x, y: xy.y});
+      const interactiveTile = this._getInteractiveTile(tile);
+      const vtFeature = interactiveTile.query({x: xy.x, y: xy.y});
 
       if (!vtFeature) {
         return null;
       }
 
-      let feature = vtFeature.toGeoJSON(tileXY.x, tileXY.y, zoom);
+      const feature = vtFeature.toGeoJSON(tileXY.x, tileXY.y, zoom);
 
       // remove feature.id because is internaly. And we don't know what property is used as id
       delete feature.id;
@@ -108,8 +108,8 @@ const VectorTileLayer = L.GridLayer.extend({
 
   _eachTile: function(fn) {
     for (let key in this._tiles) {
-      let tile = this._tiles[key];
-      let interactiveTile = this._getInteractiveTile(tile);
+      const tile = this._tiles[key];
+      const interactiveTile = this._getInteractiveTile(tile);
       fn(interactiveTile);
     }
   },
@@ -121,7 +121,7 @@ const VectorTileLayer = L.GridLayer.extend({
   _getSubdomain: L.TileLayer.prototype._getSubdomain,
 
   _getVectorTilePromise: function(coords) {
-    let tileUrl = L.Util.template(this._url, L.extend({
+    const tileUrl = L.Util.template(this._url, L.extend({
       s: this._getSubdomain(coords),
       x: coords.x,
       y: coords.y,
@@ -137,12 +137,12 @@ const VectorTileLayer = L.GridLayer.extend({
         }
 
         return response.blob().then(function(blob) {
-          let reader = new FileReader();
+          const reader = new FileReader();
           return new Promise(function(resolve) {
             reader.addEventListener('loadend', function() {
               // reader.result contains the contents of blob as a typed array
               // blob.type === 'application/x-protobuf'
-              let pbf = new Pbf( reader.result );
+              const pbf = new Pbf( reader.result );
               return resolve(new vectorTile.VectorTile(pbf));
             });
             reader.readAsArrayBuffer(blob);
