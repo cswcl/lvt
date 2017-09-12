@@ -3,12 +3,12 @@
 // return closest point on segment or distance to that point
 // see: leaflet/src/geometry/LineUtil.js
 function sqClosestPointOnSegment(p, p1, p2, sqDist) {
-  let x = p1.x,
-      y = p1.y,
-      dx = p2.x - x,
-      dy = p2.y - y,
-      dot = dx * dx + dy * dy,
-      t;
+  let x = p1.x;
+  let y = p1.y;
+  let dx = p2.x - x;
+  let dy = p2.y - y;
+  const dot = dx * dx + dy * dy;
+  let t;
 
   if (dot > 0) {
     t = ((p.x - x) * dx + (p.y - y) * dy) / dot;
@@ -35,8 +35,8 @@ function pointToSegmentDistance(p, p1, p2) {
 }
 
 function distance(p1, p2) {
-  let dx = p2.x - p1.x,
-      dy = p2.y - p1.y;
+  const dx = p2.x - p1.x;
+  const dy = p2.y - p1.y;
 
   return Math.sqrt(dx * dx + dy * dy);
 }
@@ -50,14 +50,18 @@ function cartesianProduct(arr) {
       return b.map(function(y) {
         return x.concat(y);
       });
-    }).reduce(function(a,b) {
+    }).reduce(function(a, b) {
       return a.concat(b);
     }, []);
   }, [[]]);
 }
 
 function zipObject(keys, values) {
-  let obj = {};
+  const obj = {};
+
+  if (keys.length !== values.length) {
+    throw Error('zipObject: parameter lengths must be the same');
+  }
 
   for (let i = 0, n = keys.length; i < n; i++) {
     obj[keys[i]] = values[i];

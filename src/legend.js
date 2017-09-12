@@ -18,10 +18,10 @@ const pad = 4;
 
 let drawer = {
   point: function(canvas, style) {
-    let ctx = canvas.getContext('2d'),
-        hw = canvas.width / 2,
-        hh = canvas.height / 2,
-        radius = Math.min(hw, hh) - pad;
+    const ctx = canvas.getContext('2d');
+    const hw = canvas.width / 2;
+    const hh = canvas.height / 2;
+    const radius = Math.min(hw, hh) - pad;
 
     applyStyle(style, ctx);
     ctx.beginPath();
@@ -36,9 +36,9 @@ let drawer = {
   },
 
   line: function(canvas, style) {
-    let ctx = canvas.getContext('2d'),
-        w = canvas.width,
-        h = canvas.height;
+    const ctx = canvas.getContext('2d');
+    const w = canvas.width;
+    const h = canvas.height;
 
     applyStyle(style, ctx);
 
@@ -57,9 +57,9 @@ let drawer = {
   },
 
   polygon: function(canvas, style) {
-    let ctx = canvas.getContext('2d'),
-        w = canvas.width,
-        h = canvas.height;
+    const ctx = canvas.getContext('2d');
+    const w = canvas.width;
+    const h = canvas.height;
 
     applyStyle(style, ctx);
 
@@ -77,10 +77,10 @@ let drawer = {
 
 
 function drawSymbol(styleFn, symbol) {
-  let fakeFeature = {properties: symbol.data},
-      zoom = symbol.data.zoom || 0,
-      style = styleFn(fakeFeature, zoom),
-      canvas = document.createElement('canvas');
+  const fakeFeature = {properties: symbol.data};
+  const zoom = symbol.data.zoom || 0;
+  const style = styleFn(fakeFeature, zoom);
+  const canvas = document.createElement('canvas');
 
   canvas.width = 24;
   canvas.height = 24;
@@ -90,7 +90,7 @@ function drawSymbol(styleFn, symbol) {
 }
 
 function createTitleFromSymbolData(data) {
-  let conditions = [];
+  const conditions = [];
 
   for (let k in data) {
     conditions.push(data[k]);
@@ -101,12 +101,12 @@ function createTitleFromSymbolData(data) {
 
 
 function createSymbolsFromStyle(styleDef, geom) {
-  let variants = {
+  const variants = {
     zoom: []
   };
 
   // Buscar propiedades que tienen definición de tipo mapbox-gl-function
-  let functionProperties = Object.keys(styleDef)
+  const functionProperties = Object.keys(styleDef)
     .filter((key) => typeof styleDef[key] === 'object');
 
   // Si todas las propiedades son constantes, el estilo no depende del feature
@@ -121,15 +121,15 @@ function createSymbolsFromStyle(styleDef, geom) {
   // Para cada uno de los valores definidos como mapbox-gl-function se debe
   // obtener un conjunto de valores de muestra
   functionProperties.forEach(function(key) {
-    let value = styleDef[key];
-    let property = value.property;
+    const value = styleDef[key];
+    const property = value.property;
 
     if (property && !variants[property]) {
       variants[property] = [];
     }
 
     value.stops.forEach(function(stop) {
-      let propValue = stop[0];
+      const propValue = stop[0];
 
       if (!property) {
         variants.zoom.push(propValue);
@@ -148,13 +148,13 @@ function createSymbolsFromStyle(styleDef, geom) {
   }
 
   // ahora con las muestras se debe construir todas las combinaciones posibles
-  let keys = Object.keys(variants).filter((k) => variants[k].length);
-  let allValues = keys.map((k) => variants[k]);
+  const keys = Object.keys(variants).filter((k) => variants[k].length);
+  const allValues = keys.map((k) => variants[k]);
 
   return util.cartesianProduct(allValues)
     .map(function(values) {
-      let data = util.zipObject(keys, values);
-      let symbol = {
+      const data = util.zipObject(keys, values);
+      const symbol = {
         title: createTitleFromSymbolData(data),
         geom: geom,
         data: data

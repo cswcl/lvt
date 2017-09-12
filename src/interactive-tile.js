@@ -6,7 +6,7 @@ const Tile = require('./tile');
 const util = require('./util');
 
 function InteractiveTile(coords, tileSize) {
-  let canvas = document.createElement('canvas');
+  const canvas = document.createElement('canvas');
 
   canvas.width = tileSize;
   canvas.height = tileSize;
@@ -22,11 +22,11 @@ InteractiveTile.prototype.getContainer = function getContainer() {
 
 InteractiveTile.prototype.query = function query(p) {
   for (let layerId in this._layers) {
-    let layer = this._layers[layerId];
-    let features = layer.features;
+    const layer = this._layers[layerId];
+    const features = layer.features;
 
     for (let i = 0, n = features.length; i < n; i++) {
-      let feature = features[i];
+      const feature = features[i];
       let containsPoint = false;
 
       switch (feature.type) {
@@ -54,11 +54,11 @@ InteractiveTile.prototype._beforeFeatureDraw = function _beforeFeatureDraw(featu
 };
 
 InteractiveTile.prototype._calculeClickTolerance = function _calculeClickTolerance(feature, style) {
-  let touchTolerance = (L.Browser.touch ? 10 : 2);
+  const touchTolerance = (L.Browser.touch ? 10 : 2);
 
   if (feature.type === Tile.POINT) {
     // TODO: considerar que los marcadores despues incluiraran otras formas ademas de circulo
-    let markerRadius = style['marker-size'] / 2;
+    const markerRadius = style['marker-size'] / 2;
     return markerRadius + touchTolerance;
   }
 
@@ -68,8 +68,13 @@ InteractiveTile.prototype._calculeClickTolerance = function _calculeClickToleran
 };
 
 InteractiveTile.prototype._linestringContainsPoint = function _linestringContainsPoint(linestring, p, closed) {
-  let i, j, k, len, len2, part,
-      w = linestring.clickTolerance;
+  let i;
+  let j;
+  let k;
+  let len;
+  let len2;
+  let part;
+  let w = linestring.clickTolerance;
 
   // TODO: optimize
   // if (!linestring._pxBounds.contains(p)) { return false; }
@@ -91,8 +96,15 @@ InteractiveTile.prototype._linestringContainsPoint = function _linestringContain
 };
 
 InteractiveTile.prototype._PolygonContainsPoint = function _PolygonContainsPoint(polygon, p) {
-  let inside = false,
-      part, p1, p2, i, j, k, len, len2;
+  let inside = false;
+  let part;
+  let p1;
+  let p2;
+  let i;
+  let j;
+  let k;
+  let len;
+  let len2;
 
   // TODO: optimize
   // if (!polygon._pxBounds.contains(p)) { return false; }
@@ -116,8 +128,12 @@ InteractiveTile.prototype._PolygonContainsPoint = function _PolygonContainsPoint
 };
 
 InteractiveTile.prototype._pointNearsPoint = function _pointNearsPoint(point, p) {
-  let i, j, len, len2, part,
-      w = point.clickTolerance;
+  let i;
+  let j;
+  let len;
+  let len2;
+  let part;
+  let w = point.clickTolerance;
 
   for (i = 0, len = point._parts.length; i < len; i++) {
     part = point._parts[i];
