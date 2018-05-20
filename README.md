@@ -3,6 +3,8 @@
 Este modulo permite crear un layer de leaflet que renderiza [vector
 tiles](https://github.com/mapbox/vector-tile-spec).
 
+[![DeepScan grade](https://deepscan.io/api/projects/2449/branches/15547/badge/grade.svg)](https://deepscan.io/dashboard#view=project&pid=2449&bid=15547)
+
 ## Instalación
 
 ```
