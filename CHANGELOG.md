@@ -1,5 +1,9 @@
 # Changelog
 
+**0.3.1**
+
+ - update dependencies to fix several vulnerabilities
+
 **0.3.0**
 
  - (breaking change) se renombra función de filtrado `filter` a `setFilter`.
