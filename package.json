@@ -1,6 +1,6 @@
 {
   "name": "leaflet-vector-tile",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "Renderiza mapbox vector tiles",
   "main": "lib/index.js",
   "scripts": {
