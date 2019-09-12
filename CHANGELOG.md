@@ -2,7 +2,7 @@
 
 **0.3.1**
 
- - dependencies upgrade to resolve several vulnerabilities
+ - update dependencies to fix several vulnerabilities
 
 **0.3.0**
 
