@@ -21,9 +21,9 @@
   "author": "Jorge Godoy <godoy.jf@gmail.com>",
   "homepage": "https://bitbucket.org/cswcl/leaflet-vector-tile#readme",
   "dependencies": {
-    "@babel/cli": "^7.6.0",
-    "@babel/core": "^7.6.0",
-    "@babel/preset-env": "^7.6.0",
+    "@babel/cli": "^7.10.5",
+    "@babel/core": "^7.10.5",
+    "@babel/preset-env": "^7.10.4",
     "@mapbox/vector-tile": "1.x",
     "csscolorparser": "1.x",
     "leaflet": "1.x",
